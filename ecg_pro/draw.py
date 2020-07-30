@@ -61,7 +61,7 @@ freqs = np.linspace(0,samplingFreq/2, fftLen )
 
 
 from scipy import signal
-sos = signal.iirfilter(17, [2*np.pi*50, 2*np.pi*200], rs=60, btype='bandstop',
+sos = signal.iirfilter(17, [2*np.pi*50, 2*np.pi*100], rs=60, btype='bandstop',
                         analog=False, ftype='cheby2', fs=4000,
                         output='sos')
 w, h = signal.sosfreqz(sos, 2000, fs=2000)
@@ -74,7 +74,7 @@ fftLen = int(len(fftData) / 2)
 freqs = np.linspace(0,samplingFreq/2, fftLen )
 
 
-sos2 = signal.iirfilter(17, [2*np.pi*50, 2*np.pi*200], rs=60, btype='bandpass',
+sos2 = signal.iirfilter(17, [2*np.pi*50, 2*np.pi*100], rs=60, btype='bandpass',
                         analog=False, ftype='cheby2', fs=4000,
                         output='sos')
 w, h = signal.sosfreqz(sos2, 2000, fs=2000)
