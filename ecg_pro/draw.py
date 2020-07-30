@@ -23,7 +23,7 @@ timeset = pd.read_csv("ekg.csv")
 
 # import json
 
-# f = open('final.txt') com.android.support:appcompat-v7:28.0.0
+# f = open('final.txt')
 # # print(json.loads(f.read())[0])
 # dataset = json.loads(f.read())
 # f.close()
