@@ -77,16 +77,16 @@ ekgFiltered2 = signal.sosfilt(sos2, ekgFiltered)
 def moving_average(x, w):
     return np.convolve(x, np.ones(w), 'same') / w
 
-ax1.plot(t, moving_average(ekgFiltered2, 100), color='g')
+result = moving_average(ekgFiltered2, 100)
+ax1.plot(t, result, color='g')
 
 
 ax2 = fig_td.add_subplot(313)
 ax2.set_title('image_1')
-fft=scipy.fft(moving_average(ekgFiltered2, 100))
-bp=fft[:]
-for i in range(len(bp)): # (H-red)
- 	if i>=100:bp[i]=0
-ibp=scipy.ifft(bp) 
+fft=scipy.fft(result)
+for i in range(len(fft)): # (H-red)
+ 	if i>=100:fft[i]=0
+ibp=scipy.ifft(fft) 
 ax2.plot(ibp/max(ibp), 'b', color='b', linewidth=0.7)
 ax2.grid() 
 plt.show()
