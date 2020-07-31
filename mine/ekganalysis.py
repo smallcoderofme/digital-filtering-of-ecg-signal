@@ -142,8 +142,7 @@ ekgDF['Time (s)'] = ekgDF1['Time (s)']
 
 print ('Sampling frequency is: ')
 samplingFreq = 1/(ekgDF['Time (s)'][22]-ekgDF['Time (s)'][21])
-print (samplingFreq)
-ekgDF
+
 
 
 # Time Domain Signal
@@ -155,6 +154,7 @@ plt.plot(ekgDF['Time (s)'],ekgDF['Channel 1 (V)'])
 # FFT len is half size of the signal len
 # Because of nyquist theorem only half of the sampling frequency can be seen in the sprectrum
 ekgData = ekgDF['Channel 1 (V)'].values
+
 fftData = np.abs( fft(ekgData) )
 fftLen = int(len(fftData) / 2)
 freqs = np.linspace(0,samplingFreq/2, fftLen )
@@ -190,7 +190,6 @@ plt.show()
 
 ## filter out 50 Hz noise
 ekgFiltered = signal.sosfilt(sos, ekgData)
-
 
 # Time Domain Signal
 matplotlib.rc('figure', figsize=(15, 8))
@@ -248,4 +247,6 @@ def moving_average(x, w):
 
 # Time Domain Signal
 matplotlib.rc('figure', figsize=(15, 8))
+# print("ekgFiltered2", ekgFiltered2)
 plt.plot(ekgDF['Time (s)'],moving_average(ekgFiltered2, 100))
+

@@ -18,17 +18,10 @@ import matplotlib.pyplot as plt
 import matplotlib
 import scipy
 
-dataset = pd.read_csv("my.csv")
+# dataset = pd.read_csv("my.csv")
 timeset = pd.read_csv("ekg.csv")
 
-# import json
-
-# f = open('final.txt')
-# # print(json.loads(f.read())[0])
-# dataset = json.loads(f.read())
-# f.close()
-
-y = dataset.hart.values
+y = timeset['Channel 1 (V)'].values
 y = y[0:8000]
 t = timeset['Time (s)'].values
 
@@ -43,7 +36,7 @@ fig_td = plt.figure()
 fig_td.canvas.set_window_title('ECG_0')
 ax = fig_td.add_subplot(311)
 ax.set_title('image_0')
-
+ax.grid() 
 ax.plot(x, y, color='r', linewidth=0.7)
 
 from scipy.fftpack import fft
@@ -54,14 +47,14 @@ samplingFreq = 1/(t[22]-y[21])
 
 ax1 = fig_td.add_subplot(312)
 ax1.set_title('image_1')
-
+ax1.grid() 
 fftData = np.abs( fft(y) )
 fftLen = int(len(fftData) / 2)
 freqs = np.linspace(0,samplingFreq/2, fftLen )
 
 
 from scipy import signal
-sos = signal.iirfilter(17, [2*np.pi*50, 2*np.pi*100], rs=60, btype='bandstop',
+sos = signal.iirfilter(17, [2*np.pi*50, 2*np.pi*200], rs=60, btype='bandstop',
                         analog=False, ftype='cheby2', fs=4000,
                         output='sos')
 w, h = signal.sosfreqz(sos, 2000, fs=2000)
@@ -74,13 +67,13 @@ fftLen = int(len(fftData) / 2)
 freqs = np.linspace(0,samplingFreq/2, fftLen )
 
 
-sos2 = signal.iirfilter(17, [2*np.pi*50, 2*np.pi*100], rs=60, btype='bandpass',
+sos2 = signal.iirfilter(17, [2*np.pi*50, 2*np.pi*200], rs=60, btype='bandpass',
                         analog=False, ftype='cheby2', fs=4000,
                         output='sos')
 w, h = signal.sosfreqz(sos2, 2000, fs=2000)
 
 ekgFiltered2 = signal.sosfilt(sos2, ekgFiltered)
-
+# ekgFiltered2 = signal.sosfilt(sos2, ekgFiltered2)
 def moving_average(x, w):
     return np.convolve(x, np.ones(w), 'same') / w
 
@@ -95,5 +88,5 @@ for i in range(len(bp)): # (H-red)
  	if i>=100:bp[i]=0
 ibp=scipy.ifft(bp) 
 ax2.plot(ibp/max(ibp), 'b', color='b', linewidth=0.7)
-
+ax2.grid() 
 plt.show()
